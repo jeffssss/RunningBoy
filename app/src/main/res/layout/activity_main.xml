@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AbsoluteLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#FFF4E0"
+    >
+
+    <TextView
+        android:id="@+id/state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="content"/>
+
+    <Button
+        android:id="@+id/device_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="devices list"
+        android:layout_gravity="center"/>
+    <TextView
+        android:id="@+id/step_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_y="312dp"
+        android:layout_x="100dp"
+        android:textSize="150px"
+        android:textScaleX="1.5"
+        android:text="123"
+        android:layout_gravity="left"
+        android:typeface="sans"/>
+    <TextView
+        android:id="@+id/step_numbers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_y="500px"/>
+    <Button
+        android:id="@+id/reset_step"
+        android:layout_width="wrap_content"
+        android:layout_height="96dp"
+        android:text="reset"
+        android:width="400px"
+        android:height="90px"
+        android:layout_x="89dp"
+        android:layout_y="397dp"
+        android:background="#FBD48B"
+        android:textSize="38dp"
+
+        />
+
+s
+</AbsoluteLayout>
