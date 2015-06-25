@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,7 +38,7 @@ public class MainActivity extends Activity {
     TextView stateText = null;
     TextView contentText = null;
     TextView stepNumberText = null;
-    Button resetStepButton = null;
+    ImageButton resetStepButton = null;
     /**
      * Name of the connected device
      */
@@ -53,7 +54,7 @@ public class MainActivity extends Activity {
         contentText = (TextView) findViewById(R.id.content);
         stepNumberText = (TextView) findViewById(R.id.step_numbers);
         stepNumberText.setText("0");
-        resetStepButton = (Button) findViewById(R.id.reset_step);
+        resetStepButton = (ImageButton) findViewById(R.id.reset_step);
 
         deviceButton.setOnClickListener(new View.OnClickListener() {
             @Override
