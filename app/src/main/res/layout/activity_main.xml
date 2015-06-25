@@ -6,10 +6,38 @@
     android:background="#FFF4E0"
     >
 
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_y="440dp"
+        android:orientation="vertical">
+        <ImageButton
+            android:id="@+id/reset_step"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@layout/button_pressed"
+            android:layout_gravity="center"/>
+    </LinearLayout>
+
+    <ImageView
+        android:src="@drawable/upblue"
+        android:layout_width="409dp"
+        android:layout_height="271dp"
+        android:layout_x="-13dp"
+        android:layout_y="-11dp" />
+    <ImageView
+        android:src="@drawable/tree"
+        android:layout_width="420dp"
+        android:layout_height="wrap_content"
+        android:layout_x="-22dp"
+        android:layout_y="101dp" />
+
     <TextView
         android:id="@+id/state"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
 
     <TextView
         android:id="@+id/content"
@@ -35,20 +63,7 @@
         android:gravity="center"
         android:layout_gravity="left"
         android:typeface="sans"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_y="440dp"
-        android:orientation="vertical">
-        <ImageButton
-            android:id="@+id/reset_step"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@layout/button_pressed"
-            android:layout_gravity="center"
-            />
 
-    </LinearLayout>
 
 
 
