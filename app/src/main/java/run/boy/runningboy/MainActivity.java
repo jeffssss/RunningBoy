@@ -319,7 +319,6 @@ public class MainActivity extends Activity {
             Log.d(TAG, "See arrow");
             animUp.setVisibility(ImageView.VISIBLE);
             animUp.startAnimation(translateAnimation);
-            //translateAnimation.startNow();
         }
     }
 }
