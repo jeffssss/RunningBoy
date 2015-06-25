@@ -9,10 +9,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -36,34 +40,50 @@ public class MainActivity extends Activity {
      */
     private BluetoothService mService = null;
 
-    Button deviceButton = null;
-    TextView stateText = null;
-    TextView contentText = null;
-    TextView stepNumberText = null;
-    ImageButton resetStepButton = null;
-    AnimationDrawable animation = null;
+    //Button deviceButton = null;
+    private TextView stateText = null;
+    private TextView contentText = null;
+    private TextView stepNumberText = null;
+    private ImageButton resetStepButton = null;
+    private AnimationDrawable animation = null;
+    private ImageView animImg = null;
+    private ImageView animUp = null;
+    private GestureDetector mGestureDetector = null;
+    //Translate动画 - 位置移动
+    private Animation translateAnimation = null;
     /**
      * Name of the connected device
      */
     private String mConnectedDeviceName = null;
-
+    //状态量，用于控制动画
+    private boolean ifDeviceConnected = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        deviceButton = (Button) findViewById(R.id.device_button);
         stateText = (TextView) findViewById(R.id.state);
         contentText = (TextView) findViewById(R.id.content);
         stepNumberText = (TextView) findViewById(R.id.step_numbers);
         stepNumberText.setText("0");
         resetStepButton = (ImageButton) findViewById(R.id.reset_step);
 
-        deviceButton.setOnClickListener(new View.OnClickListener() {
+        mGestureDetector =  new GestureDetector(this,new GestureDetector.SimpleOnGestureListener(){
             @Override
-            public void onClick(View v) {
-                Intent serverIntent = new Intent(getActivity(), DeviceListActivity.class);
-                startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);
+            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+                Log.d(TAG,e1.getRawX() + " " + e1.getRawY() + " " + e2.getRawX() + " " + e2.getRawY());
+                if (Math.abs( e1.getRawY() - e2.getRawY()) > 250 &&
+                        Math.abs(e1.getRawX() - e2.getRawX()) < 150) {
+                    //device choose activity start
+                    Intent serverIntent = new Intent(getActivity(), DeviceListActivity.class);
+                    startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);
+
+                    Log.d(TAG,"gesture onFling");
+                    return true;
+                } else {
+                    Log.d(TAG,"gesture not onFling");
+                }
+                return super.onFling(e1, e2, velocityX, velocityY);
             }
         });
 
@@ -86,11 +106,25 @@ public class MainActivity extends Activity {
         }
 
         //animation relative
-        ImageView animImg = (ImageView) findViewById(R.id.anim_img);
+        animImg = (ImageView) findViewById(R.id.anim_img);
         animImg.setBackgroundResource(R.drawable.anim_running);
         animation = (AnimationDrawable) animImg.getBackground();
+        animUp = (ImageView) findViewById(R.id.anim_up);
+        translateAnimation = new TranslateAnimation(0.0f,0.0f,0.0f,-550.0f);
+        translateAnimation.setDuration(2000);
+        translateAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
+        translateAnimation.setRepeatCount(-1);
+        translateAnimation.setRepeatMode(Animation.INFINITE);
+
     }
 
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        Log.d(TAG,"touch");
+        mGestureDetector.onTouchEvent(event);
+
+        return super.onTouchEvent(event);
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -138,10 +172,8 @@ public class MainActivity extends Activity {
         } else if (mService == null) {
             setupService();
         }
+        refreshAnimation();
 
-        //animation start
-        animation.stop();
-        animation.start();
     }
 
     @Override
@@ -192,15 +224,18 @@ public class MainActivity extends Activity {
                     switch (msg.arg1) {
                         case BluetoothService.STATE_CONNECTED:
                             stateText.setText(getString(R.string.title_connected_to, mConnectedDeviceName));
+                            ifDeviceConnected = true;
                             break;
                         case BluetoothService.STATE_CONNECTING:
                             stateText.setText(R.string.title_connecting);
                             break;
                         case BluetoothService.STATE_LISTEN:
                         case BluetoothService.STATE_NONE:
+                            ifDeviceConnected = false;
                             stateText.setText(R.string.title_not_connected);
                             break;
                     }
+                    refreshAnimation();
                     break;
 
                 case Constants.MESSAGE_WRITE:
@@ -244,6 +279,7 @@ public class MainActivity extends Activity {
                 default:
                     Log.e(TAG,"错了");
             }
+
         }
 
     };
@@ -260,5 +296,30 @@ public class MainActivity extends Activity {
     private boolean judgeRunning(String result){
         //如果result不是一个字符 就判断是不是1开头
         return result.length() > 1 ?  result.startsWith("1"): result.equals("1");
+    }
+    private void refreshAnimation(){
+        Log.d(TAG,"refreshAnimation");
+        if(ifDeviceConnected){
+            Log.d(TAG, "hide arrow");
+            //translateAnimation.cancel();
+            animUp.clearAnimation();
+            animUp.setVisibility(ImageView.GONE);
+            //animation start
+            Log.d(TAG,"see running");
+            animImg.setVisibility(ImageView.VISIBLE);
+            animation.stop();
+            animation.start();
+
+        } else {
+            Log.d(TAG, "hide running");
+            animation.stop();
+            animImg.setVisibility(ImageView.GONE);
+
+
+            Log.d(TAG, "See arrow");
+            animUp.setVisibility(ImageView.VISIBLE);
+            animUp.startAnimation(translateAnimation);
+            //translateAnimation.startNow();
+        }
     }
 }

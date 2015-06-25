@@ -5,9 +5,7 @@
     android:layout_height="fill_parent"
     android:background="#FFF4E0"
     >
-
-
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_y="451dp"
@@ -20,7 +18,7 @@
             android:layout_height="wrap_content"
             android:background="@layout/button_pressed"
             android:layout_gravity="center"/>
-    </LinearLayout>
+    </FrameLayout>
 
     <ImageView
         android:src="@drawable/upblue"
@@ -49,14 +47,6 @@
         android:layout_x="92dp"
         android:layout_y="12dp" />
 
-    <Button
-        android:id="@+id/device_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="devices list"
-        android:layout_gravity="center"
-        android:layout_x="285dp"
-        android:layout_y="6dp" />
     <TextView
         android:id="@+id/step_numbers"
         android:layout_width="match_parent"
@@ -85,7 +75,13 @@
         />
 
 </LinearLayout>
-
+    <ImageView
+        android:id="@+id/anim_up"
+        android:src="@drawable/up"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_x="140dp"
+        android:layout_y="300dp" />
 
 
 </AbsoluteLayout>
