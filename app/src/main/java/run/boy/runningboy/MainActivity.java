@@ -301,7 +301,6 @@ public class MainActivity extends Activity {
         Log.d(TAG,"refreshAnimation");
         if(ifDeviceConnected){
             Log.d(TAG, "hide arrow");
-            //translateAnimation.cancel();
             animUp.clearAnimation();
             animUp.setVisibility(ImageView.GONE);
             //animation start
