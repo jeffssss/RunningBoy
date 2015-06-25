@@ -21,5 +21,5 @@ local.properties
 target
 build.xml
 out
-.idea/
+.idea/*
 *.iml
