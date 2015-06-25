@@ -43,14 +43,18 @@
         android:id="@+id/content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="content"/>
+        android:text="content"
+        android:layout_x="92dp"
+        android:layout_y="12dp" />
 
     <Button
         android:id="@+id/device_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="devices list"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center"
+        android:layout_x="285dp"
+        android:layout_y="6dp" />
     <TextView
         android:id="@+id/step_numbers"
         android:layout_width="match_parent"
@@ -65,6 +69,12 @@
         android:typeface="sans"/>
 
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/anim_img"
+        android:layout_x="100dp"
+        android:layout_y="100dp" />
 
 
 </AbsoluteLayout>

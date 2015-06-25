@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+    <item android:drawable="@drawable/kai_running_01" android:duration="50" />
+    <item android:drawable="@drawable/kai_running_02" android:duration="50" />
+    <item android:drawable="@drawable/kai_running_03" android:duration="50" />
+    <item android:drawable="@drawable/kai_running_04" android:duration="50" />
+    <item android:drawable="@drawable/kai_running_05" android:duration="50" />
+    <item android:drawable="@drawable/kai_running_06" android:duration="50" />
+    <item android:drawable="@drawable/kai_running_07" android:duration="50" />
+    <item android:drawable="@drawable/kai_running_08" android:duration="50" />
+    <item android:drawable="@drawable/kai_running_09" android:duration="50" />
+    <item android:drawable="@drawable/kai_running_10" android:duration="50" />
+    <item android:drawable="@drawable/kai_running_11" android:duration="50" />
+    <item android:drawable="@drawable/kai_running_12" android:duration="50" />
+    <item android:drawable="@drawable/kai_running_13" android:duration="50" />
+    <item android:drawable="@drawable/kai_running_14" android:duration="50" />
+    <item android:drawable="@drawable/kai_running_15" android:duration="50" />
+    <item android:drawable="@drawable/kai_running_16" android:duration="50" />
+    <item android:drawable="@drawable/kai_running_17" android:duration="50" />
+    <item android:drawable="@drawable/kai_running_18" android:duration="50" />
+    <item android:drawable="@drawable/kai_running_19" android:duration="50" />
+</animation-list>

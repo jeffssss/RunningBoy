@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -13,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +41,7 @@ public class MainActivity extends Activity {
     TextView contentText = null;
     TextView stepNumberText = null;
     ImageButton resetStepButton = null;
+    AnimationDrawable animation = null;
     /**
      * Name of the connected device
      */
@@ -82,6 +85,10 @@ public class MainActivity extends Activity {
             activity.finish();
         }
 
+        //animation relative
+        ImageView animImg = (ImageView) findViewById(R.id.anim_img);
+        animImg.setBackgroundResource(R.drawable.anim_running);
+        animation = (AnimationDrawable) animImg.getBackground();
     }
 
 
@@ -131,6 +138,10 @@ public class MainActivity extends Activity {
         } else if (mService == null) {
             setupService();
         }
+
+        //animation start
+        animation.stop();
+        animation.start();
     }
 
     @Override
@@ -205,13 +216,22 @@ public class MainActivity extends Activity {
                     }
                     break;
                 case Constants.MESSAGE_READ:
+                    String result ="";
                     try {
-                        contentText.setText(String.valueOf(new String((byte[])msg.obj,"UTF-8")));
+                        result = new String((byte[])msg.obj,"UTF-8");
+                        contentText.setText(result);
                     } catch (UnsupportedEncodingException e) {
                         Log.e(TAG,"handleMessage MESSAGE_READ : msg.obj decode error");
                         contentText.setText("error char");
                     }
-                    stepNumberText.setText(addStep(String.valueOf(stepNumberText.getText())));
+                    if(judgeRunning(result)){
+                        //true为 running状态 计数器加一
+                        stepNumberText.setText(addStep(String.valueOf(stepNumberText.getText())));
+                    } else{
+                        //false
+                        // TODO 暂停动画
+                    }
+
                     break;
 
                 case Constants.MESSAGE_TOAST:
@@ -235,5 +255,10 @@ public class MainActivity extends Activity {
     private String addStep(String ori){
         int step = Integer.parseInt(ori) + 1;
         return String.valueOf(step);
+    }
+
+    private boolean judgeRunning(String result){
+        //如果result不是一个字符 就判断是不是1开头
+        return result.length() > 1 ?  result.startsWith("1"): result.equals("1");
     }
 }
