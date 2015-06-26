@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.GestureDetector;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -59,6 +60,7 @@ public class MainActivity extends Activity {
     private boolean ifDeviceConnected = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG,"on create");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -72,15 +74,19 @@ public class MainActivity extends Activity {
             @Override
             public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
                 Log.d(TAG,e1.getRawX() + " " + e1.getRawY() + " " + e2.getRawX() + " " + e2.getRawY());
-                if (Math.abs( e1.getRawY() - e2.getRawY()) > 250 &&
-                        Math.abs(e1.getRawX() - e2.getRawX()) < 150) {
+                if ( (e1.getRawY() - e2.getRawY() > 250 )&&
+                        (Math.abs(e1.getRawX() - e2.getRawX()) < 150 )) {
                     //device choose activity start
                     Intent serverIntent = new Intent(getActivity(), DeviceListActivity.class);
                     startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);
 
                     Log.d(TAG,"gesture onFling");
                     return true;
-                } else {
+                } else if( (e2.getRawY() - e1.getRawY() > 250 ) &&
+                        (Math.abs(e1.getRawX() - e2.getRawX()) < 150) ){
+                    finish();
+                }
+                else {
                     Log.d(TAG,"gesture not onFling");
                 }
                 return super.onFling(e1, e2, velocityX, velocityY);
@@ -151,7 +157,7 @@ public class MainActivity extends Activity {
                 }
         }
     }
-
+    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -177,6 +183,48 @@ public class MainActivity extends Activity {
     }
 
     @Override
+    protected void onRestart() {
+        Log.d(TAG, "ON RESTART");
+        super.onRestart();
+    }
+
+    @Override
+    protected void onResume() {
+        Log.d(TAG,"ON RESUME");
+        super.onResume();
+        // Performing this check in onResume() covers the case in which BT was
+        // not enabled during onStart(), so we were paused to enable it...
+        // onResume() will be called when ACTION_REQUEST_ENABLE activity returns.
+        if (mService != null) {
+            // Only if the state is STATE_NONE, do we know that we haven't started already
+            if (mService.getState() == BluetoothService.STATE_NONE) {
+                // Start the Bluetooth chat services
+                mService.start();
+            }
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        Log.d(TAG,"ON PAUSE");
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        Log.d(TAG,"ON STOP");
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mService != null) {
+            mService.stop();
+        }
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -190,7 +238,14 @@ public class MainActivity extends Activity {
 
         return super.onOptionsItemSelected(item);
     }
-
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            moveTaskToBack(false);
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
     /**
      * Establish connection with other divice
      *
